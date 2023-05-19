@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Измерение длины контура векторного изображения</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <h1>Измерение длины контура векторного изображения</h1>
+  <form method="POST" enctype="multipart/form-data" action="/upload">
+    <input type="file" name="file" accept=".svg"/>
+    <input type="submit" value="Загрузить изображение"/>
+  </form>
+  <h2>Загруженное изображение:</h2>
+  <img id="uploadedImage" src=""/>
+  <h2>Длина контура:</h2>
+  <div id="length"></div>
+</div>
+
+<script>
+  // Найти форму на странице
+  const form = document.querySelector('form');
+
+  // Добавить обработчик события submit
+  form.addEventListener('submit', event => {
+    // Отменить стандартное поведение формы
+    event.preventDefault();
+
+    // Создать объект FormData из формы
+    const formData = new FormData(form);
+
+    // Отправить данные формы на сервер с помощью AJAX
+    fetch('/upload', {
+      method: 'POST',
+      body: formData
+    })
+            .then(response => response.json())
+            .then(result => {
+              // Найти элементы для отображения результата и изображения
+              const lengthElement = document.querySelector('#length');
+              const imageElement = document.querySelector('#uploadedImage');
+
+              // Отобразить результат и изображение
+              lengthElement.textContent = result.length;
+              imageElement.src = 'data:image/svg+xml;base64,' + btoa(result.svg);
+            });
+  });
+</script>
+
+
+</body>
+</html>
