@@ -20,7 +20,6 @@ public class ImageLength {
         this.fileName = fileName;
         this.length = length;
     }
-
-    // getters and setters
 }
+
 
